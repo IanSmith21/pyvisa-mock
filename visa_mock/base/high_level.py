@@ -366,7 +366,7 @@ class MockVisaLibrary(highlevel.VisaLibraryBase):
     def lock(
             self,
             session: int,
-            lock_type: constants.Lock,
+            lock_type: constants.AccessModes,
             timeout: int,
             requested_key: Optional[str] = None,) -> Tuple[str, StatusCode]:
         """Establishes an access mode to the specified resources.
@@ -375,7 +375,7 @@ class MockVisaLibrary(highlevel.VisaLibraryBase):
         ----------
         session : VISASession
             Unique logical identifier to a session.
-        lock_type : constants.Lock
+        lock_type : constants.AccessMode.exclusive_lock
             Specifies the type of lock requested.
         timeout : int
             Absolute time period (in milliseconds) that a resource waits to get
@@ -391,8 +391,9 @@ class MockVisaLibrary(highlevel.VisaLibraryBase):
         StatusCode
             Return value of the library call.
         """
-        if lock_type != constants.Lock.exclusive:
-            raise NotImplementedError(f'Only constant.Lock.exclusive supported.  ({lock_type})')
+        if lock_type != constants.AccessModes.exclusive_lock:
+            raise NotImplementedError(
+                f'Only constant.AccessModes.exclusive_lock supported.  ({lock_type})')
         if requested_key is not None:
             raise NotImplementedError(f'Requested key is not supported. ({requested_key})')
         try:
